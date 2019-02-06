@@ -18,3 +18,4 @@ clean:
 	rm prog1generator.o
 	rm prog1generator
 	rm -fv *~ \#*\# *.swp
+	rm -fv *.txt

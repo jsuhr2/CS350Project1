@@ -4,6 +4,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+int countOccur(FILE* file, int numInts, int value){
+
+}
+
 int main(int argc, char const *argv[]){
 	int numInts, min, max = -1;
 	char * inFile, outFile, countFile = NULL;
@@ -55,6 +59,33 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 	char * user = getenv("USER");
-	printf("user: %s\n", user);
+	
+	int *numbers = (int *) malloc(numInts * sizeof(int));
+	if(numbers == NULL){
+		fprintf(stderr, "Malloc failed\n");
+		return 0;
+	}
+	
+	int inFlag, outFlag, countFlag = 0;
+	if(inFile != NULL){
+		FILE *input = fopen(inFile, "r");
+		inFlag = 1;
+	}
+	if(outFile != NULL){
+		FILE *output = fopen(outFile, "w");
+		outFlag = 1;
+	}
+	if(countFile != NULL){
+		FILE *count = fopen(outFile, "w");
+		countFlag = 1;
+	}
+/*
+	if(inFlag = 1)
+		fclose(input);
+	if(outFlag = 1)
+		fclose(output);
+	if(countFlag = 1)
+		fclose(count);
+*/
 	return 0;
 }
