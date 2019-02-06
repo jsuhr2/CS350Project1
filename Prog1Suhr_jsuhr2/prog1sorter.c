@@ -1,15 +1,14 @@
-#include "prog1sorter.h"
+#include "parser.h"
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
 
-int countOccur(int *numbers, int value){
+int countOccur(int *numbers, int numInts, int value){
 	int count = 0;
-	int size = sizeof(numbers)/sizeof(numbers[0]);
-	for(int i = 0; i < size; i++){
-		if(*(numbers + 1) == value)
+	for(int i = 0; i < numInts; i++){
+		if(*(numbers + i) == value)
 			count++;
 	}
 	return count;
@@ -23,42 +22,26 @@ int main(int argc, char const *argv[]){
 	int numInts = -1;
 	int min = -1;
 	int max = -1;
-	char * inFile = NULL;
-	char * outFile = NULL;
-	char * countFile = NULL;
+	FILE * input = NULL;
+	FILE * output = NULL;
+	FILE * count = NULL;
 	clock_t start, end;
 	double time_elapsed;
 	int opt;
-	while((opt = getopt(argc, argv, "u:n:m:M:i:o:c:")) != -1){
-			switch(opt){
-				case 'u':
-					fprintf(stderr, "Learn How to Use This Command\n");
-					return 0;
-					break;
-				case 'n':
-					numInts = atoi(optarg);
-					break;
-				case 'm':
-					min = atoi(optarg);
-					break;
-				case 'M':
-					max = atoi(optarg);
-					break;
-				case 'i':
-					inFile = optarg;
-					break;
-				case 'o':
-					outFile = optarg;
-					break;
-				case 'c':
-					countFile = optarg;
-					break;
-				case '?':
-					fprintf(stderr, "Incorrect Command Line Arguments\n");
-					return 0;
-					break;
-			}
-	}
+	
+	
+	Node inputs = parseSorter(argc, argv);
+	if(inputs.exitFlag == 1)
+		return 0;
+
+	numInts = inputs.numInts;
+	min = inputs.min;
+	max = inputs.max;
+	input = inputs.input;
+	output = inputs.output;
+	count = inputs.count;
+
+
 	start = clock();
 	if(numInts == -1)
 		numInts = 100;
@@ -83,58 +66,51 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 
-	char * user = getenv("USER");
 	int *numbers = (int *) malloc(numInts * sizeof(int));
 	if(numbers == NULL){
 		fprintf(stderr, "Malloc failed\n");
 		return 0;
 	}
 	
-	int intsInFile = 0;
-	if(inFile != NULL){
-		FILE *input = fopen(inFile, "r");
-		fscanf(input, "%d", &intsInFile);
+	if(input != NULL){
 		for(int i = 0; i < numInts; i++){
 			fscanf(input, "%d", &numbers[i]);
+			if(&numbers[i] < min || &numbers[i] > max){
+				fprintf(stderr, "Integer in data is outside of the acceptable range\n");
+				return 0;
+			}
 		}
 	} else {
-		scanf("%d", &intsInFile);
 		for(int i = 0; i < numInts; i++){
 			scanf("%d", &numbers[i]);
+			if(&numbers[i] < min || &numbers[i] > max){
+				fprintf(stderr, "Integer in data is outside of the acceptable range\n");
+				return 0;
+			}
 		}
 	}
 	
-	printf("\n");
-	
-	int sizeNumbers = sizeof(numbers)/sizeof(numbers[0]);
-	qsort(numbers, sizeNumbers, sizeof(numbers[0]), compareFunction);
+	qsort(numbers, numInts, sizeof(numbers[0]), compareFunction);
 
-	if(outFile != NULL){
-		FILE *output = fopen(outFile, "w");
-		fprintf(output,"%d\n", numInts);
+	if(output != NULL){
 		for(int i = 0; i < numInts; i++){
 			fprintf(output,"%d\n", *(numbers + i));
 		}
 	} else{
-		printf("%d\n", numInts);
 		for(int i = 0; i < numInts; i++){
 			printf("%d\n", *(numbers + i));
 		}
 	}
-	
-	printf("\n");
 
-	int sizeUser = sizeof(user)/sizeof(user[0]);
-	if(countFile != NULL){
-		FILE *count = fopen(outFile, "w");
-		for(int i = 0; i < sizeUser; i++){
-			fprintf(count, "%c %d %d\n", *(user + i), (int)*(user + i), 
-				countOccur(numbers, (int)*(user + i)));
+	char * user = getenv("USER");
+	char * t;
+	if(count != NULL){
+		for(t = user; *t != '\0'; t++){
+			fprintf(count, "%c %d %d\n", *t, (int)*t, countOccur(numbers, numInts, (int)*t));
 		}
 	} else {
-		for(int i = 0; i < sizeUser; i++){
-			printf("%c %d %d\n", *(user + i), (int)*(user + i), 
-				countOccur(numbers, (int)*(user + i)));
+		for(t = user; *t != '\0'; t++){
+			printf("%c %d %d\n", *t, (int)*t, countOccur(numbers, numInts, (int)*t));
 		}
 	}	
 
@@ -143,10 +119,11 @@ int main(int argc, char const *argv[]){
 	fprintf(stderr, "Time Elapsed: %d\n", time_elapsed);
 	
 	free(numbers);
-/*
-	fclose(input);
-	fclose(output);
-	fclose(count);
-*/
+	if(input != NULL)
+		fclose(input);
+	if(output != NULL)
+		fclose(output);
+	if(count != NULL)
+		fclose(count);
 	return 0;
 }

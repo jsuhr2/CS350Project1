@@ -1,4 +1,4 @@
-#include "prog1generator.h"
+#include "parser.h"
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -9,39 +9,25 @@ int main(int argc, char const *argv[]){
 	int numInts = -1;
 	int min = -1; 
 	int max = -1;
-	char * outFile = NULL;
-	long seed = -1;
+	FILE * output = NULL;
+	unsigned int seed = -1;
 	int opt;
 	int generated;
 	clock_t start, end;
 	double time_elapsed;
-	while((opt = getopt(argc, argv, "un:m:M:s:o:")) != -1){
-			switch(opt){
-				case 'u':
-					fprintf(stderr, "Learn How to Use This Command\n");
-					return 0;
-					break;
-				case 'n':
-					numInts = atoi(optarg);
-					break;
-				case 'm':
-					min = atoi(optarg);
-					break;
-				case 'M':
-					max = atoi(optarg);
-					break;
-				case 's':
-					seed = optarg;
-					break;
-				case 'o':
-					outFile = optarg;
-					break;
-				case '?':
-					fprintf(stderr, "Incorrect Command Line Arguments\n");
-					return 0;
-					break;
-			}
-	}
+	
+
+	Node inputs = parseGenerator(argc, argv);
+
+	if(inputs.exitFlag == 1)
+		return 0;
+
+	numInts = inputs.numInts;
+	min = inputs.min;
+	max = inputs.max;
+	output = inputs.output;
+	seed = inputs.seed;
+
 	start = clock();
 	if(numInts == -1)
 		numInts = 100;
@@ -69,9 +55,8 @@ int main(int argc, char const *argv[]){
 		srand(seed);
 	else
 		srand(time(0));
-	if(outFile != NULL){
-		FILE *output = fopen(outFile, "w");
-		fprintf(output,"%d\n", numInts);
+	
+	if(output != NULL){
 		for(int i = 0; i < numInts; i++){
 			do{
 				generated = rand();
@@ -79,7 +64,6 @@ int main(int argc, char const *argv[]){
 			fprintf(output,"%d\n", generated);
 		}
 	} else{
-		printf("%d\n", numInts);
 		for(int i = 0; i < numInts; i++){
 			do{
 				generated = rand();
@@ -87,9 +71,11 @@ int main(int argc, char const *argv[]){
 			printf("%d\n", generated);
 		}
 	}
+
 	end = clock();
 	time_elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
 	fprintf(stderr, "Time Elapsed: %d\n", time_elapsed);
-//	fclose(output);
+	if(output != NULL)
+		fclose(output);
 	return 0;
 }
