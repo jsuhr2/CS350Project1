@@ -75,7 +75,7 @@ int main(int argc, char const *argv[]){
 	if(input != NULL){
 		for(int i = 0; i < numInts; i++){
 			fscanf(input, "%d", &numbers[i]);
-			if(&numbers[i] < min || &numbers[i] > max){
+			if(numbers[i] < min || numbers[i] > max){
 				fprintf(stderr, "Integer in data is outside of the acceptable range\n");
 				return 0;
 			}
@@ -83,7 +83,7 @@ int main(int argc, char const *argv[]){
 	} else {
 		for(int i = 0; i < numInts; i++){
 			scanf("%d", &numbers[i]);
-			if(&numbers[i] < min || &numbers[i] > max){
+			if(numbers[i] < min || numbers[i] > max){
 				fprintf(stderr, "Integer in data is outside of the acceptable range\n");
 				return 0;
 			}
