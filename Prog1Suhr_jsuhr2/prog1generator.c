@@ -14,6 +14,7 @@ int main(int argc, char const *argv[]){
 	int opt;
 	int generated;
 	clock_t start, end;
+	double time_elapsed;
 	while((opt = getopt(argc, argv, "un:m:M:s:o:")) != -1){
 			switch(opt){
 				case 'u':
@@ -86,8 +87,9 @@ int main(int argc, char const *argv[]){
 			printf("%d\n", generated);
 		}
 	}
-	
 	end = clock();
+	time_elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
+	fprintf(stderr, "Time Elapsed: %d\n", time_elapsed);
 //	fclose(output);
 	return 0;
 }
