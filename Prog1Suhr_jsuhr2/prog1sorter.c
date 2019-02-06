@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 int main(int argc, char const *argv[]){
 	int numInts, min, max = -1;
@@ -53,7 +54,7 @@ int main(int argc, char const *argv[]){
 		fprintf(stderr, "Maximum integer value cannot be less than minimum integer value\n");
 		return 0;
 	}
-	char * name = getenv("USER");
-	printf("name: %s\n", name);
+	char * user = getenv("USER");
+	printf("user: %s\n", user);
 	return 0;
 }
