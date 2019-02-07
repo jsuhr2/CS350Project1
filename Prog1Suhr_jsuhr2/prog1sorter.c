@@ -27,8 +27,6 @@ int main(int argc, char const *argv[]){
 	FILE * count = NULL;
 	clock_t start, end;
 	double time_elapsed;
-	int opt;
-	
 	
 	Node inputs = parseSorter(argc, argv);
 	if(inputs.exitFlag == 1)
@@ -116,7 +114,7 @@ int main(int argc, char const *argv[]){
 
 	end = clock();
 	time_elapsed = ((double)(end - start))/CLOCKS_PER_SEC;
-	fprintf(stderr, "Time Elapsed: %d\n", time_elapsed);
+	fprintf(stderr, "Time Elapsed: %f\n", time_elapsed);
 	
 	free(numbers);
 	if(input != NULL)

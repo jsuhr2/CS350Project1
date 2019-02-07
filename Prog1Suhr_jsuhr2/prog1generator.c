@@ -11,7 +11,6 @@ int main(int argc, char const *argv[]){
 	int max = -1;
 	FILE * output = NULL;
 	unsigned int seed = -1;
-	int opt;
 	int generated;
 	clock_t start, end;
 	double time_elapsed;
@@ -74,7 +73,7 @@ int main(int argc, char const *argv[]){
 
 	end = clock();
 	time_elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
-	fprintf(stderr, "Time Elapsed: %d\n", time_elapsed);
+	fprintf(stderr, "Time Elapsed: %f\n", time_elapsed);
 	if(output != NULL)
 		fclose(output);
 	return 0;

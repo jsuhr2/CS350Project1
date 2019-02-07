@@ -13,7 +13,7 @@ Node parseSorter(int argc, const char **argv){
 	while((opt = getopt(argc, argv, "un:m:M:i:o:c:")) != -1){
 			switch(opt){
 				case 'u':
-					fprintf(stderr, "prog1sorter [-u] [-n <num-integers>] [-m <min-int>]	[-M <max-int>] [-i <input-file-name>] [-o <output-file-name>] [-c <count-file-name>]\n");
+					fprintf(stderr, "prog1sorter [-u] [-n <num-integers>] [-m <min-int>] [-M <max-int>] [-i <input-file-name>] [-o <output-file-name>] [-c <count-file-name>]\n");
 					inputs.exitFlag = 1;
 					return inputs;
 					break;
@@ -36,7 +36,7 @@ Node parseSorter(int argc, const char **argv){
 					inputs.count = fopen(optarg, "w");
 					break;
 				case '?':
-					fprintf(stderr, "Incorrect Command Line Arguments\n");
+					fprintf(stderr, "prog1sorter [-u] [-n <num-integers>] [-m <min-int>] [-M <max-int>] [-i <input-file-name>] [-o <output-file-name>] [-c <count-file-name>]\n");
 					inputs.exitFlag = 1;
 					return inputs;
 					break;
@@ -77,7 +77,7 @@ Node parseGenerator(int argc, const char **argv){
 					inputs.output = fopen(optarg, "w");
 					break;
 				case '?':
-					fprintf(stderr, "Incorrect Command Line Arguments\n");
+					fprintf(stderr, "prog1generator [-u] [-n <num-integers>] [-m <min-int>]	[-M <max-int>] [-s <seed>] [-o <output-file-name>]\n");
 					inputs.exitFlag = 1;
 					return inputs;
 					break;
