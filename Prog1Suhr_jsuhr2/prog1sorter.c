@@ -73,6 +73,8 @@ int main(int argc, char const *argv[]){
 	if(input != NULL){
 		for(int i = 0; i < numInts; i++){
 			fscanf(input, "%d", &numbers[i]);
+			if(feof(input))
+				break;
 			if(numbers[i] < min || numbers[i] > max){
 				fprintf(stderr, "Integer in data is outside of the acceptable range\n");
 				return 0;
@@ -108,11 +110,11 @@ int main(int argc, char const *argv[]){
 	char * t;
 	if(count != NULL){
 		for(t = user; *t != '\0'; t++){
-			fprintf(count, "%c %d %d\n", *t, (int)*t, countOccur(numbers, numInts, (int)*t));
+			fprintf(count, "%c\t%d\t%d\n", *t, (int)*t, countOccur(numbers, numInts, (int)*t));
 		}
 	} else {
 		for(t = user; *t != '\0'; t++){
-			printf("%c %d %d\n", *t, (int)*t, countOccur(numbers, numInts, (int)*t));
+			printf("%c\t%d\t%d\n", *t, (int)*t, countOccur(numbers, numInts, (int)*t));
 		}
 	}	
 
