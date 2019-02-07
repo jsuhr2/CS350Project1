@@ -28,7 +28,7 @@ int main(int argc, char const *argv[]){
 	clock_t start, end;
 	double time_elapsed;
 	
-	Node inputs = parseSorter(argc, argv);
+	Node inputs = parse(argc, argv);
 	if(inputs.exitFlag == 1)
 		return 0;
 
@@ -81,6 +81,8 @@ int main(int argc, char const *argv[]){
 	} else {
 		for(int i = 0; i < numInts; i++){
 			scanf("%d", &numbers[i]);
+			if(feof(stdin))
+				break;
 			if(numbers[i] < min || numbers[i] > max){
 				fprintf(stderr, "Integer in data is outside of the acceptable range\n");
 				return 0;
@@ -92,11 +94,13 @@ int main(int argc, char const *argv[]){
 
 	if(output != NULL){
 		for(int i = 0; i < numInts; i++){
-			fprintf(output,"%d\n", *(numbers + i));
+			if(*(numbers + i) != 0)
+				fprintf(output,"%d\n", *(numbers + i));
 		}
 	} else{
 		for(int i = 0; i < numInts; i++){
-			printf("%d\n", *(numbers + i));
+			if(*(numbers + i) != 0)
+				printf("%d\n", *(numbers + i));
 		}
 	}
 
@@ -114,7 +118,7 @@ int main(int argc, char const *argv[]){
 
 	end = clock();
 	time_elapsed = ((double)(end - start))/CLOCKS_PER_SEC;
-	fprintf(stderr, "Time Elapsed: %f\n", time_elapsed);
+	fprintf(stderr, "Sorter Time Elapsed: %f\n", time_elapsed);
 	
 	free(numbers);
 	if(input != NULL)

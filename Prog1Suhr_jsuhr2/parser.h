@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
 
 struct _Node {
 	int numInts;
@@ -19,8 +20,6 @@ struct _Node {
 };
 typedef struct _Node Node;
 
-Node parseSorter(int, const char**);
-
-Node parseGenerator(int, const char**);
+Node parse(int, const char**);
 
 #endif

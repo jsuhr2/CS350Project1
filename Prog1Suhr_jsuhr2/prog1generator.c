@@ -16,7 +16,7 @@ int main(int argc, char const *argv[]){
 	double time_elapsed;
 	
 
-	Node inputs = parseGenerator(argc, argv);
+	Node inputs = parse(argc, argv);
 
 	if(inputs.exitFlag == 1)
 		return 0;
@@ -57,23 +57,31 @@ int main(int argc, char const *argv[]){
 	
 	if(output != NULL){
 		for(int i = 0; i < numInts; i++){
+/*
 			do{
 				generated = rand();
 			} while((generated < min) || (generated > max));
 			fprintf(output,"%d\n", generated);
+*/
+			generated = (rand() % (max - min +1)) + min;
+			fprintf(output,"%d\n", generated);
 		}
 	} else{
 		for(int i = 0; i < numInts; i++){
+/*
 			do{
 				generated = rand();
 			} while((generated < min) || (generated > max));
+			printf("%d\n", generated);
+*/
+			generated = (rand() % (max - min +1)) + min;
 			printf("%d\n", generated);
 		}
 	}
 
 	end = clock();
 	time_elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
-	fprintf(stderr, "Time Elapsed: %f\n", time_elapsed);
+	fprintf(stderr, "Generator Time Elapsed: %f\n", time_elapsed);
 	if(output != NULL)
 		fclose(output);
 	return 0;
